@@ -75,6 +75,7 @@ defmodule Backup do
         |> Enum.sort()
         |> Enum.slice(0, range)
         |> Enum.each(fn file -> File.rm!(Path.join(saves_dir, file)) end)
+
         IO.puts("Removed #{range} backup files")
       end
     end)
