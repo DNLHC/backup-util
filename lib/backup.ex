@@ -1,5 +1,5 @@
 defmodule Backup do
-  @backups_dir Path.expand(Application.get_env(:backup, :backups_dir))
+  @backups_dir Path.expand(Application.get_env(:backup, :backup_dir))
   @saves_dir Path.expand(Application.get_env(:backup, :saves_dir))
   @max_backups 20
 
