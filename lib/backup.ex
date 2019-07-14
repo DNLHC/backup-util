@@ -1,6 +1,6 @@
 defmodule Backup do
-  @backups_dir Path.expand("~/Documents/DSR_backups")
-  @saves_dir Path.expand("~/Documents/DS_TEST")
+  @backups_dir Path.expand(Application.get_env(:backup, :backups_dir))
+  @saves_dir Path.expand(Application.get_env(:backup, :saves_dir))
   @max_backups 20
 
   def init do

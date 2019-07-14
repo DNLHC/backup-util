@@ -5,7 +5,6 @@ defmodule Backup.Interval do
     GenServer.start_link(__MODULE__, %{})
   end
 
-  @impl true
   def init(state) do
     Backup.init()
     schedule_work()
@@ -13,7 +12,6 @@ defmodule Backup.Interval do
     {:ok, state}
   end
 
-  @impl true
   def handle_info(:work, state) do
     Backup.backup()
     Backup.clean()
