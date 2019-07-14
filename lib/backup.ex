@@ -1,7 +1,7 @@
 defmodule Backup do
   @backups_dir Path.expand("~/Documents/DSR_backups")
   @saves_dir Path.expand("~/Documents/DS_TEST")
-  @max_backups 10
+  @max_backups 20
 
   def init do
     if not File.exists?(@backups_dir) do
@@ -36,7 +36,10 @@ defmodule Backup do
       end)
       |> Enum.each(fn file_path ->
         backup_name = get_backup_name(file_path)
+        created_at = get_current_time()
+
         File.cp!(file_path, Path.join(save_backup_dir, backup_name))
+        IO.puts("#{created_at}: Created backup #{backup_name}")
       end)
     end)
   end
@@ -46,14 +49,18 @@ defmodule Backup do
     extname = Path.extname(file)
     basename = Path.basename(file, extname)
 
-    "#{timestamp}-#{basename}#{extname}"
+    "#{timestamp}_#{basename}#{extname}"
+  end
+
+  def get_current_time do
+    Time.utc_now() |> Time.truncate(:second) |> Time.to_string()
   end
 
   def get_saves_list(path) do
     File.ls!(path) |> Enum.filter(fn file -> File.dir?(Path.join(path, file)) end)
   end
 
-  def get_timestamp() do
+  def get_timestamp do
     now = DateTime.utc_now()
     date = Enum.join([now.year, now.month, now.day], "-")
     time = Enum.join([now.hour, now.minute, now.second], "-")
@@ -76,7 +83,7 @@ defmodule Backup do
         |> Enum.slice(0, range)
         |> Enum.each(fn file -> File.rm!(Path.join(saves_dir, file)) end)
 
-        IO.puts("Removed #{range} backup files")
+        IO.puts("#{get_current_time()}: Removed #{range} backup files")
       end
     end)
   end
